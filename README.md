@@ -43,6 +43,8 @@ chmod +x change_id.sh
 ```
 
 
+[![Star History Chart](https://api.star-history.com/svg?repos=fly8888/cursor_machine_id&type=Area)](https://star-history.com/#fly8888/cursor_machine_id&Area)
+
 ## 免责声明
 
 本脚本仅供学习和研究使用，使用本脚本可能违反 Cursor 的服务条款。请合理使用，风险自负。
