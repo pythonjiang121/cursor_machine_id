@@ -1,50 +1,76 @@
 # Cursor Device ID Changer
 
-这是一个简单的脚本工具，用于修改 Cursor 编辑器的设备 ID。当因频繁切换账号导致设备被锁定时，可以使用此脚本重置设备 ID。
+一个用于修改 Cursor 编辑器设备 ID 的跨平台工具集。当遇到设备 ID 锁定问题时，可用于重置设备标识。
 
-## 功能特点
+## 功能特性
 
-- 自动生成新的随机设备 ID
-- 自动备份原配置文件
-- 支持自定义设备 ID
-- 无需额外依赖，使用系统内置工具
+- ✨ 支持 Windows 和 macOS 系统
+- 🔄 自动生成符合格式的随机设备 ID
+- 💾 自动备份原配置文件
+- 🛠️ 支持自定义设备 ID（仅 macOS 版本）
+- 📦 无需额外依赖，仅使用系统内置工具
 
-## 使用方法
+## 使用说明
 
-1. 下载 `change_id.sh` 脚本
-2. 给脚本添加执行权限：
+### Windows 系统
 
-```base
-chmod +x change_id.sh
-```
+1. 下载 `win_change_id.bat` 脚本
+2. 右键点击脚本，选择"以管理员身份运行"
+3. 按照提示等待脚本执行完成
 
-3. 运行脚本：
+### macOS 系统
 
+1. 下载 `mac_change_id.sh` 脚本
+2. 打开终端，进入脚本所在目录
+3. 添加执行权限：
 ```bash
-使用随机生成的设备 ID
-./change_id.sh
-或者使用自定义设备 ID
-./change_id.sh your_custom_id
+chmod +x mac_change_id.sh
 ```
+4. 运行脚本：
+```bash
+# 使用随机生成的设备 ID
+./mac_change_id.sh
 
-
-## 注意事项
-
-- 脚本会在修改前自动创建配置文件的备份
-- 备份文件保存在原配置文件相同目录下，格式为 `storage.json.backup_时间戳`
-- 请确保在运行脚本前关闭 Cursor 编辑器
-- 仅支持 macOS 系统
+# 使用自定义设备 ID（可选）
+./mac_change_id.sh your_custom_id
+```
 
 ## 配置文件位置
 
-默认配置文件路径：
+### Windows
 ```
-"~/Library/Application Support/Cursor/User/globalStorage/storage.json"
+%APPDATA%\Cursor\User\globalStorage\storage.json
 ```
 
+### macOS
+```
+~/Library/Application Support/Cursor/User/globalStorage/storage.json
+```
+
+## 注意事项
+
+- 运行脚本前请确保已完全关闭 Cursor 编辑器
+- 脚本会自动备份原配置文件，备份文件格式为 `storage.json.backup_时间戳`
+- Windows 版本需要管理员权限运行
+- 建议每次使用后检查 Cursor 是否正常运行
+
+## 工作原理
+
+脚本通过修改以下设备标识符来重置 Cursor 的设备识别：
+
+- `telemetry.machineId`
+- `telemetry.macMachineId`
+- `telemetry.devDeviceId`
+- `telemetry.sqmId`（仅 Windows 版本）
+
+## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=fly8888/cursor_machine_id&type=Area)](https://star-history.com/#fly8888/cursor_machine_id&Area)
 
 ## 免责声明
 
-本脚本仅供学习和研究使用，使用本脚本可能违反 Cursor 的服务条款。请合理使用，风险自负。
+本工具仅供学习和研究使用。使用本工具可能违反 Cursor 的服务条款，请谨慎使用并自行承担相关风险。作者不对使用本工具导致的任何问题负责。
+
+## License
+
+MIT License
