@@ -74,9 +74,7 @@ def update_storage_file(file_path):
     data['telemetry.machineId'] = new_machine_id
     data['telemetry.macMachineId'] = new_mac_machine_id
     data['telemetry.devDeviceId'] = new_dev_device_id
-    
-    if platform.system().lower() == 'windows':
-        data['telemetry.sqmId'] = '{' + str(uuid.uuid4()).upper() + '}'
+    data['telemetry.sqmId'] = '{' + str(uuid.uuid4()).upper() + '}'
     
     # 写入文件
     with open(file_path, 'w') as f:
