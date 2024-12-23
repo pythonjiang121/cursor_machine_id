@@ -4,21 +4,30 @@
 
 ## 功能特性
 
-- ✨ 支持 Windows 和 macOS 系统
+- ✨ 支持 Windows、macOS 和 Linux 系统
 - 🔄 自动生成符合格式的随机设备 ID
 - 💾 自动备份原配置文件
-- 🛠️ 支持自定义设备 ID（仅 macOS 版本）
-- 📦 无需额外依赖，仅使用系统内置工具
+- 🛠️ 支持自定义设备 ID（仅 shell 脚本版本）
+- 📦 提供 Shell 脚本和 Python 脚本两种实现方式
 
 ## 使用说明
 
-### Windows 系统
+### Python 脚本（推荐，全平台通用）
+
+1. 确保系统已安装 Python（支持 Python 2.7+ 或 Python 3.x）
+2. 下载 `change_cursor_id.py` 脚本
+3. 运行脚本：
+```bash
+python change_cursor_id.py
+```
+
+### Windows 系统（批处理脚本）
 
 1. 下载 `win_change_id.bat` 脚本
 2. 右键点击脚本，选择"以管理员身份运行"
 3. 按照提示等待脚本执行完成
 
-### macOS 系统
+### macOS 系统（Shell 脚本）
 
 1. 下载 `mac_change_id.sh` 脚本
 2. 打开终端，进入脚本所在目录
@@ -35,6 +44,19 @@ chmod +x mac_change_id.sh
 ./mac_change_id.sh your_custom_id
 ```
 
+### Linux 系统（Shell 脚本）
+
+1. 下载 `linux_change_id.sh` 脚本
+2. 打开终端，进入脚本所在目录
+3. 添加执行权限：
+```bash
+chmod +x linux_change_id.sh
+```
+4. 运行脚本：
+```bash
+./linux_change_id.sh
+```
+
 ## 配置文件位置
 
 ### Windows
@@ -46,6 +68,27 @@ chmod +x mac_change_id.sh
 ```
 ~/Library/Application Support/Cursor/User/globalStorage/storage.json
 ```
+
+### Linux
+```
+~/.config/Cursor/User/globalStorage/storage.json
+```
+
+## 脚本说明
+
+### Python 脚本 (change_cursor_id.py)
+- 跨平台兼容，支持所有操作系统
+- 使用 Python 标准库，无需安装额外依赖
+- 支持 Python 2.7+ 和 Python 3.x
+- 自动检测系统类型并使用对应配置路径
+- 提供更好的错误处理和兼容性
+
+### Shell/Batch 脚本
+- 分别针对不同操作系统优化
+- Windows 版本 (win_change_id.bat)
+- macOS 版本 (mac_change_id.sh)
+- Linux 版本 (linux_change_id.sh)
+- 支持自定义设备 ID
 
 ## 注意事项
 
