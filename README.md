@@ -2,6 +2,9 @@
 
 一个用于修改 Cursor 编辑器设备 ID 的跨平台工具集。当遇到设备 ID 锁定问题时，可用于重置设备标识。
 
+
+<span style="color: red"><strong>⚠️ 注意：如果重试后无效，请删除账号重新注册，并且重置设备id 重启Cursor。</strong></span>
+
 ## 功能特性
 
 - ✨ 支持 Windows、macOS 和 Linux 系统
