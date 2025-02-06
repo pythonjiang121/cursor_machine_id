@@ -2,12 +2,13 @@
 
 一个用于修改 Cursor 编辑器设备 ID 的跨平台工具集。当遇到设备 ID 锁定问题时，可用于重置设备标识。
 
+mac_change_id.sh 支持 MacOS Cursor 0.45.x版本,其它平台暂不支持。
 
 <span style="color: red"><strong>⚠️ 注意：如果重试后无效，请删除账号重新注册，并且重置设备id 重启Cursor。</strong></span>
 
 ## 功能特性
 
-- ✨ 支持 Windows、macOS 和 Linux 系统
+- ✨ 支持 Windows、macOS(支持0.45.x) 和 Linux 系统
 - 🔄 自动生成符合格式的随机设备 ID
 - 💾 自动备份原配置文件
 - 🛠️ 支持自定义设备 ID（仅 shell 脚本版本）
