@@ -42,10 +42,7 @@ chmod +x mac_change_id.sh
 4. 运行脚本：
 ```bash
 # 使用随机生成的设备 ID
-./mac_change_id.sh
-
-# 使用自定义设备 ID（可选）
-./mac_change_id.sh your_custom_id
+sudo sh mac_change_id.sh
 ```
 
 ### Linux 系统（Shell 脚本）
