@@ -25,10 +25,17 @@ def get_storage_path():
         return os.path.join(home, '.config', 'Cursor', 'User', 'globalStorage', 'storage.json')
 
 def get_main_js_path():
-    """获取main.js文件路径 (仅macOS)"""
-    if platform.system().lower() != 'darwin':
-        return None
-    return '/Applications/Cursor.app/Contents/Resources/app/out/main.js'
+    """获取main.js文件路径"""
+    system = platform.system().lower()
+    
+    if system == 'darwin':  # macOS
+        return '/Applications/Cursor.app/Contents/Resources/app/out/main.js'
+    elif system == 'windows':  # Windows
+        user_profile = os.getenv('LOCALAPPDATA')  # 使用LOCALAPPDATA而不是USERPROFILE
+        if not user_profile:
+            return None
+        return os.path.join(user_profile, 'Programs', 'cursor', 'resources', 'app', 'out', 'main.js')
+    return None
 
 def generate_random_id():
     """生成随机ID (64位十六进制)"""
@@ -71,19 +78,31 @@ def update_main_js(file_path):
         with open(file_path, 'r') as f:
             content = f.read()
 
-        # 替换 ioreg 命令
-        new_content = re.sub(
-            r'ioreg -rd1 -c IOPlatformExpertDevice',
-            'UUID=$(uuidgen | tr \'[:upper:]\' \'[:lower:]\');echo \\"IOPlatformUUID = \\"$UUID\\";',
-            content
-        )
+        system = platform.system().lower()
+        if system == 'darwin':
+            # macOS: 替换 ioreg 命令
+            new_content = re.sub(
+                r'ioreg -rd1 -c IOPlatformExpertDevice',
+                'UUID=$(uuidgen | tr \'[:upper:]\' \'[:lower:]\');echo \\"IOPlatformUUID = \\"$UUID\\";',
+                content
+            )
+        elif system == 'windows':
+            # Windows: 替换 REG.exe 命令
+            # 注意：这里使用三重引号来处理复杂的转义
+            old_cmd = r'${v5[s$()]}\\REG.exe QUERY HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Cryptography /v MachineGuid'
+            new_cmd = r'powershell -Command "[guid]::NewGuid().ToString().ToLower()"'
+            new_content = content.replace(old_cmd, new_cmd)
+        else:
+            print('警告: 不支持的操作系统')
+            return False
 
         # 写入修改后的内容
         with open(file_path, 'w') as f:
             f.write(new_content)
 
         # 验证修改
-        if 'UUID=$(uuidgen | tr \'[:upper:]\' \'[:lower:]\');echo \\"IOPlatformUUID = \\"$UUID\\";' in new_content:
+        success_marker = 'UUID=$(uuidgen | tr \'[:upper:]\' \'[:lower:]\');echo \\"IOPlatformUUID = \\"$UUID\\";' if system == 'darwin' else 'powershell -Command "[guid]::NewGuid().ToString().ToLower()"'
+        if success_marker in new_content:
             print('main.js 文件修改成功')
             return True
         else:
@@ -146,8 +165,9 @@ def main():
         print('macMachineId:', mac_machine_id)
         print('devDeviceId:', dev_device_id)
 
-        # 在 macOS 上处理 main.js
-        if platform.system().lower() == 'darwin':
+        # 处理 main.js
+        system = platform.system().lower()
+        if system in ['darwin', 'windows']:
             main_js_path = get_main_js_path()
             if main_js_path:
                 update_main_js(main_js_path)
