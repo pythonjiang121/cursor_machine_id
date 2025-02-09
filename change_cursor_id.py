@@ -8,6 +8,7 @@ import json
 import uuid
 import shutil
 import platform
+import re
 from datetime import datetime
 import errno
 
@@ -23,6 +24,12 @@ def get_storage_path():
     else:  # Linux
         return os.path.join(home, '.config', 'Cursor', 'User', 'globalStorage', 'storage.json')
 
+def get_main_js_path():
+    """获取main.js文件路径 (仅macOS)"""
+    if platform.system().lower() != 'darwin':
+        return None
+    return '/Applications/Cursor.app/Contents/Resources/app/out/main.js'
+
 def generate_random_id():
     """生成随机ID (64位十六进制)"""
     return uuid.uuid4().hex + uuid.uuid4().hex
@@ -32,7 +39,7 @@ def generate_uuid():
     return str(uuid.uuid4())
 
 def backup_file(file_path):
-    """创建配置文件备份"""
+    """创建文件备份"""
     if os.path.exists(file_path):
         backup_path = '{}.backup_{}'.format(
             file_path,
@@ -49,6 +56,44 @@ def ensure_dir_exists(path):
         except OSError as e:
             if e.errno != errno.EEXIST:
                 raise
+
+def update_main_js(file_path):
+    """更新main.js文件中的UUID生成方式"""
+    if not os.path.exists(file_path):
+        print('警告: main.js 文件不存在:', file_path)
+        return False
+
+    # 创建备份
+    backup_file(file_path)
+
+    try:
+        # 读取文件内容
+        with open(file_path, 'r') as f:
+            content = f.read()
+
+        # 替换 ioreg 命令
+        new_content = re.sub(
+            r'ioreg -rd1 -c IOPlatformExpertDevice',
+            'UUID=$(uuidgen | tr \'[:upper:]\' \'[:lower:]\');echo \\"IOPlatformUUID = \\"$UUID\\";',
+            content
+        )
+
+        # 写入修改后的内容
+        with open(file_path, 'w') as f:
+            f.write(new_content)
+
+        # 验证修改
+        if 'UUID=$(uuidgen | tr \'[:upper:]\' \'[:lower:]\');echo \\"IOPlatformUUID = \\"$UUID\\";' in new_content:
+            print('main.js 文件修改成功')
+            return True
+        else:
+            print('警告: main.js 文件可能未被正确修改，请检查文件内容')
+            print('你可以从备份文件恢复:', file_path + '.backup_*')
+            return False
+
+    except Exception as e:
+        print('修改 main.js 时出错:', str(e))
+        return False
 
 def update_storage_file(file_path):
     """更新存储文件中的ID"""
@@ -100,6 +145,12 @@ def main():
         print('machineId:', machine_id)
         print('macMachineId:', mac_machine_id)
         print('devDeviceId:', dev_device_id)
+
+        # 在 macOS 上处理 main.js
+        if platform.system().lower() == 'darwin':
+            main_js_path = get_main_js_path()
+            if main_js_path:
+                update_main_js(main_js_path)
         
     except Exception as e:
         print('错误:', str(e), file=sys.stderr)
