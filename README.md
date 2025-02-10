@@ -16,7 +16,7 @@ mac_change_id.sh 支持 MacOS Cursor 0.45.x版本,其它平台暂不支持。
 
 ## 使用说明
 
-### Python 脚本（推荐，全平台通用。仅Windows、macOS 支持 0.45.x版本）
+### Python 脚本（推荐，全平台通用。仅Windows、MacOS 支持 0.45.x版本）
 
 1. 确保系统已安装 Python（支持 Python 2.7+ 或 Python 3.x）
 2. 下载 `change_cursor_id.py` 脚本
