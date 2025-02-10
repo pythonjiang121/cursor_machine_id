@@ -57,7 +57,7 @@ echo "macMachineId: $NEW_MAC_MACHINE_ID"
 echo "devDeviceId: $NEW_DEV_DEVICE_ID"
 
 # 检查替换是否成功
-if grep -F 'UUID=$(uuidgen | tr '\''[:upper:]'\'' '\''[:lower:]'\'');echo \"IOPlatformUUID = \"$UUID\"\";' "$MAIN_JS_FILE" > /dev/null; then
+if grep -F 'darwin:"UUID=$(uuidgen' "$MAIN_JS_FILE" > /dev/null; then
     echo "main.js 文件修改成功"
 else
     echo "警告: main.js 文件可能未被正确修改，请检查文件内容"
